@@ -22,6 +22,82 @@ app.set('view engine', 'handlebars');
 
 
 
+
+
+var Student = sequelize.define('Student', {
+  firstName: {
+    type: Sequelize.STRING,
+    validate:{
+      notNull: true
+    }
+  },
+  lastName: {
+    type: Sequelize.STRING,
+    validate:{
+      notNull: true
+    }
+  },
+  username: {
+    type: Sequelize.STRING,
+    validate: {
+      notNull: true
+    }
+  },
+  password: {
+    type: Sequelize.STRING,
+    validate: {
+      notNull: true
+    }
+  }
+});
+
+var Class = sequelize.define('Class', {
+  name: {
+    type: Sequelize.STRING,
+    validate: {
+      notNull: true
+    }
+  }
+});
+
+var Instructor = sequelize.define('Instructor', {
+  firstName: {
+    type: Sequelize.STRING,
+    validate: {
+      notNull: true
+    }
+  },
+  lastName: {
+    type: Sequelize.STRING,
+    validate: {
+      notNull: true
+    }
+  },
+  username: {
+    type: Sequelize.STRING,
+    validate: {
+      notNull: true
+    }
+  },
+  password: {
+    type: Sequelize.STRING,
+    validate: {
+      notNull: true
+    }
+  },
+  isTA: {
+    type: Sequelize.BOOLEAN,
+    validate: {
+      notNull: true
+    }
+  }
+});
+
+Student.belongsToMany(Class, {through: 'studentClass'});
+Class.belongsToMany(Student, {through: 'studentClass'});
+Instructor.belongsToMany(Class, {through: 'instructorClass'});
+Class.belongsToMany(Instructor, {through: 'instructorClass'});
+
 sequelize.sync().then(function() {
   app.listen(port, function() {
     console.log("Listening on port %s", port);
