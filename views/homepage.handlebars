@@ -1,0 +1,50 @@
+<nav>
+  <div class="nav-wrapper">
+    {{#if isAuthenticated}}
+      <a href="#" class="brand-logo">Hello there, {{ user.username}}</a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="/logout">Logout</a></li>
+      </ul>
+    {{/if}}
+  </div>
+</nav>
+
+<div class="row">
+  <div class="input-field col s6">
+    {{#if category}}
+
+      <ul class="collapsible popout collection with-header" data-collapsible="accordion">
+        <li class="collection-header"><h4>Already Registered to..</h4></li>
+        {{#each class}}
+          <li>
+            <div class="collapsible-header">{{class}}</div>
+            <!--<div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>-->
+          </li>
+        {{/each}}
+      </ul>
+      <a class="waves-effect waves-light btn" href="/classRegistration">Register for classes</a>
+
+    {{else}}
+      <h2>SORRY</h2>
+    {{/if}}
+  </div>
+
+  <div class="input-field col s6">
+    <!--{{#if registration}}-->
+        <h4>Select classes:</h4>
+        <form action="/registeredClass" method="post">
+          <!--<div class="input-field col s12">-->
+            <select multiple name="classesSel">
+              <option value="" disabled selected>Choose your option</option>
+                {{#each class}}
+                  <option value="{{@index}}">{{class}}</option>
+                {{/each}}
+            </select>
+              <!--<label>Materialize Multiple Select</label>-->
+            <button class="btn waves-effect waves-light" type="submit" name="action">Register</button>
+          <!--</div>-->
+        </form>
+
+    <!--{{/if}}-->
+  </div>
+</div>
