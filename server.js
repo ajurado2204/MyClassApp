@@ -5,9 +5,17 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var exphbs = require('express-handlebars');
 var Sequelize = require('sequelize');
+var passportLocal = require('passport-local');
 
 var app = express();
 var port = process.env.PORT || 8080;
+
+app.use(require('express-session')({
+  secret: 'crackalackin',
+  resave: true,
+  saveUninitialized: true,
+  cookie : { secure : false, maxAge : (4 * 60 * 60 * 1000) } // 4 hours
+}));
 
 var sequelize = new Sequelize('myClass_db', 'root', '', {
   host:'localhost',
