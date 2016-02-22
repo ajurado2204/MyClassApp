@@ -5,6 +5,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var exphbs = require('express-handlebars');
 var Sequelize = require('sequelize');
+var passport = require('passport');
 var passportLocal = require('passport-local');
 
 var app = express();
@@ -27,10 +28,8 @@ app.use('/js', express.static("public/js"));
 app.use('/css', express.static("public/css"));
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
-
-
-
-
+app.use(passport.initialize());
+app.use(passport.session());
 
 var Student = sequelize.define('Student', {
   firstName: {
@@ -105,6 +104,27 @@ Student.belongsToMany(Class, {through: 'studentClass'});
 Class.belongsToMany(Student, {through: 'studentClass'});
 Instructor.belongsToMany(Class, {through: 'instructorClass'});
 Class.belongsToMany(Instructor, {through: 'instructorClass'});
+
+
+
+app.get('/', function(req,res) {
+  res.render('login', {msg: req.query.msg});
+});
+
+app.post('/login', function(req, res){
+
+  if(req.body.username === undefined || req.body.username === '' || req.body.password === undefined || req.body.password === ''){
+    res.redirect('/?msg=Incorrect username or password');
+  }
+  if(req.body.category === '' || req.body.category === undefined){
+    res.redirect('/?msg=Please choose one of the options above');
+  }
+
+});
+
+
+
+
 
 sequelize.sync().then(function() {
   app.listen(port, function() {
